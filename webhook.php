@@ -4,7 +4,7 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 // Read POST data
-$merchantId = $_POST['merchantId'] ?? '';
+$merchantId = $_POST['merchantId'] ?? 'TEST-M23YU5VWSCJTO_25071'; // Default test ID
 $amount = $_POST['amount'] ?? '';
 $transactionId = $_POST['transactionId'] ?? 'TXN_' . uniqid();
 
@@ -23,9 +23,9 @@ $payload = [
 
 $jsonPayload = json_encode($payload);
 
-// PhonePe API keys (Test or Production)
-$keyIndex = 1; // Provided by PhonePe
-$secretKey = 'your_production_or_test_secret_key'; // Replace with actual key
+// Test Mode API keys
+$keyIndex = 1; // saltIndex
+$secretKey = 'NTMwMzNmOTYtYjkxNC00OTkzLWE5MjUtYzhlNjNjMzA0NmVj'; // Test Client Secret
 
 // X-VERIFY header generation
 $base64Body = base64_encode($jsonPayload);
@@ -36,8 +36,8 @@ $xVerify = hash('sha256', $string) . "###" . $keyIndex;
 $curl = curl_init();
 
 curl_setopt_array($curl, [
-  CURLOPT_URL => "https://api.phonepe.com/apis/hermes/pg/v1/pay", // For PROD
-  // CURLOPT_URL => "https://api-preprod.phonepe.com/apis/pg-sandbox/pg/v1/pay", // For TEST
+  // Test URL
+  CURLOPT_URL => "https://api-preprod.phonepe.com/apis/pg-sandbox/pg/v1/pay",
   CURLOPT_RETURNTRANSFER => true,
   CURLOPT_CUSTOMREQUEST => "POST",
   CURLOPT_POSTFIELDS => json_encode(["request" => $base64Body]),
